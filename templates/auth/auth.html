@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication</title>
+    <style>
+        .form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            margin: 0;
+            font-family: Product sans, sans-serif;
+        }
+
+        html,
+        *,
+        h1,
+        h2 {
+            font-family: Product sans, sans-serif;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            padding: 50px;
+            border: 1px solid #ccc;
+            border-radius: 0px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 12pt;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form">
+        <form>
+            <h1>Welcome</h1>
+            <input type="text" placeholder="Enter your email">
+            <input type="password" placeholder="Enter your password">
+            <!--combobox-->
+            <select>
+                <option value="admin">Teacher</option>
+                <option value="user">Student</option>
+            </select>
+            <button type="submit">Proceed</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    // post to /api/login
+</script>
+</html>
