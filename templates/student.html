@@ -6,7 +6,6 @@
     }
 </script>
 
-
 <!-- UIkit CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/css/uikit.min.css" />
 
@@ -38,7 +37,6 @@
 
         scrollbar-width: thin;
         /* For Firefox */
-
 
         border-radius: 0;
         background-color: #3D2B1F;
@@ -94,7 +92,7 @@
                     <div class="uk-card-body">
                         <p><span uk-icon="icon: folder"></span></p>
                         <p class="uk-text-secondary uk-text-large uk-text-bold">Enrolled Courses</p>
-                        <p style="font-size: 16pt;">4</p>
+                        <p id="enrolled-courses" style="font-size: 16pt;">0</p>
                     </div>
                 </div>
             </div>
@@ -103,7 +101,7 @@
                     <div class="uk-card-body">
                         <p><span uk-icon="icon: calendar"></span></p>
                         <p class="uk-text-secondary uk-text-large uk-text-bold">Total class</p>
-                        <p style="font-size: 16pt;">4</p>
+                        <p id="total-classes" style="font-size: 16pt;">0</p>
                     </div>
                 </div>
             </div>
@@ -112,7 +110,7 @@
                     <div class="uk-card-body">
                         <p><span uk-icon="icon: file-text"></span></p>
                         <p class="uk-text-secondary uk-text-large uk-text-bold">Assignments</p>
-                        <p style="font-size: 16pt;">4</p>
+                        <p id="assignments" style="font-size: 16pt;">0</p>
                     </div>
                 </div>
             </div>
@@ -140,17 +138,18 @@
     </main>
 </div>
 
-
-
 <script>
+    const pieData = [10, 20, 30, 40, 50, 60]; // Example data
+    const barData = [10, 20, 30, 40, 50, 60]; // Example data
+
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: [],
+            labels: ['Subject 1', 'Subject 2', 'Subject 3', 'Subject 4', 'Subject 5', 'Subject 6'],
             datasets: [{
                 label: 'Scores',
-                data: [],
+                data: pieData,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -189,50 +188,54 @@
     const barChart = new Chart(barCtx, {
         type: 'bar',
         data: {
-            labels: [],
+            labels: ['Subject 1', 'Subject 2', 'Subject 3', 'Subject 4', 'Subject 5', 'Subject 6'],
             datasets: [{
-            label: 'Scores',
-            data: [],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
+                label: 'Scores',
+                data: barData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
             }]
         },
         options: {
             responsive: true,
             plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Results Summary'
-            }
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Results Summary'
+                }
             },
             scales: {
-            y: {
-                beginAtZero: true,
-                max: 100
-            }
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
             }
         }
-        });
-</script>
+    });
 
+    // Update counts
+    document.getElementById('enrolled-courses').innerText = pieData.length;
+    document.getElementById('total-classes').innerText = pieData.length;
+    document.getElementById('assignments').innerText = pieData.length;
+</script>
 
 <script>
     function logout() {
