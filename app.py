@@ -2,10 +2,13 @@ from flask import Flask
 from config import Config
 from models import db
 from api import api, jwt
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
 app.config.from_object(Config)
+
+Migrate(db=db, app=app)
 
 from views.auth import auth
 from views.dash import dash

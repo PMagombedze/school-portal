@@ -1,9 +1,189 @@
 <!--protect page using js-cookie-->
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 <script>
-    if (!Cookies.get('access_token')) {
+    if (!Cookies.get('teacher_token')) {
         window.location.href = '/';
     }
 </script>
 
 
+<!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/css/uikit.min.css" />
+
+<!-- UIkit JS -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/js/uikit-icons.min.js"></script>
+<!--import chartjs-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--import axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<style>
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    li,
+    a {
+        font-family: 'Product Sans', serif;
+        color: #000;
+    }
+
+    button {
+        letter-spacing: 1;
+    }
+
+    .sidebar {
+        height: 100vh;
+        padding: 20px;
+    }
+
+    main {
+        overflow-y: auto;
+
+        scrollbar-width: thin;
+        /* For Firefox */
+
+
+        border-radius: 0;
+        background-color: brown;
+
+        scrollbar-color: #3D2B1F transparent;
+        /* For Firefox */
+
+        overflow-y: auto;
+
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    #links li a {
+        color: #000;
+        font-size: 14pt;
+    }
+</style>
+
+<div class="uk-flex uk-height-1-1">
+    <aside class="sidebar uk-width-1-4 uk-padding">
+        <h2 class="uk-text-bolder">Teacher Dashboard</h2>
+        <ul id="links" class="uk-nav uk-nav-default">
+            <li><a href="#"><span uk-icon="icon: home"></span> Home</a></li>
+            <li><a href="#"><span uk-icon="icon: user"></span> Profile</a></li>
+            <li><a href="#"><span uk-icon="icon: users"></span> Students</a></li>
+            <li><a href="#"><span uk-icon="icon: sign-out"></span> Logout</a></li>
+        </ul>
+    </aside>
+
+    <main class="uk-width-expand uk-background-muted uk-padding">
+        <h1 class="uk-text-bold">Submit Student Marks</h1>
+        <form id="marksForm">
+            <div class="uk-margin">
+                <label for="student_id" class="uk-form-label uk-text-bold">Student</label>
+                <select id="student_id" class="uk-select"></select>
+            </div>
+            <div id="subject_idContainer">
+
+            </div>
+            <div class="uk-margin">
+                <button type="submit" id="submitButton" class="uk-button uk-text-bold"
+                    style="font-size: 12pt;background-color: #3D2B1F;text-transform: capitalize;color: #fff;">Submit
+                    Marks</button>
+            </div>
+        </form>
+    </main>
+</div>
+
+
+<script>
+    let subject_id = [
+        "English Language",
+        "Mathematics",
+        "Shona",
+        "Ndebele",
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "Geography",
+        "History",
+        "Integrated Science",
+        "Agriculture",
+        "Accounting",
+        "Business Studies",
+        "Economics",
+        "Computer Science",
+        "Literature in English",
+        "Religious Studies",
+        "Food and Nutrition",
+        "Fashion and Fabrics",
+        "Physical Education",
+        "Art",
+        "Music",
+        "French",
+        "Portuguese",
+        "German",
+        "Chinese",
+        "Technical Graphics",
+        "Wood Work",
+        "Metal Work",
+        "Building Studies"
+    ]
+
+    fetch('/api/students')
+        .then(response => response.json())
+        .then(data => {
+            const studentSelect = document.getElementById('student_id');
+            data.students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = student.email;
+                studentSelect.appendChild(option);
+            });
+
+
+            const subject_idContainer = document.getElementById('subject_idContainer');
+            subject_idContainer.innerHTML += `
+            <div class="uk-grid-small" uk-grid>
+                ${subject_id.map((subject, index) => `
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label uk-text-bold" for="subject${index + 1}">${subject}</label>
+                        <input class="uk-input" id="${index + 1}" name="subject${index + 1}" min="0" max="100">
+                    </div>
+                `).join('')}
+            </div>
+        `
+        })
+        .catch(error => console.error('Error fetching students:', error));
+        document.getElementById('submitButton').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const teacherId = localStorage.getItem('id');
+            const studentId = document.getElementById('student_id').value;
+            const marks = [];
+
+            for (let i = 1; i <= 30; i++) {
+                const subjectId = i;
+                const score = document.getElementById(`${i}`).value;
+                if (score) { // Only include subjects with a score
+                    const mark = {
+                        score: score,
+                        student_id: studentId,
+                        subject_id: subjectId,
+                        teacher_id: teacherId
+                    };
+
+                    axios.post('/api/marks', mark)
+                        .then(response => {
+                            console.log(`Mark for subject ${subjectId} submitted successfully:`, response.data);
+                        })
+                        .catch(error => {
+                            console.error(`Error submitting mark for subject ${subjectId}:`, error);
+                        });
+                }
+            }
+
+            console.log(marks);
+        });
+</script>

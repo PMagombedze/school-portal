@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentication</title>
+    <title>Kriste Mambo - Portal</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
 
     <!--import alerts.js in js folder-->
@@ -111,12 +111,15 @@
             console.log(data)
             if (response.status === 200 || response.status === 201) {
                 pushNotify('success', 'Authentication successful', { timeout: 5000 });
-                Cookies.set('access_token', data.access_token, { expires: 1 });
                 setTimeout(() => {
+                    localStorage.setItem('id', data.id);
                     if (data.role === "student") {
-                        window.location.href = `/teacher/dashboard/${data.id}`;
-                    } else if (data.role === "teacher") {
+                        Cookies.set('student_token', data.access_token, { expires: 1 });
+                        //localstorage set
                         window.location.href = `/student/dashboard/${data.id}`;
+                    } else if (data.role === "teacher") {
+                        Cookies.set('teacher_token', data.access_token, { expires: 1 });
+                        window.location.href = `/teacher/dashboard/${data.id}`;
                     }
                 }, 4000);
             } else {
