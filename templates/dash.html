@@ -176,8 +176,6 @@
 
 
 
-                console.log(mark);
-
                 axios.post('/api/marks', mark)
                     .then(response => {
                         console.log(`Mark for subject ${subjectId} submitted successfully:`, response.data);
@@ -188,4 +186,11 @@
             }
         }
     });
+
+    function logout() {
+        // remove all tokens
+        localStorage.clear()
+        Cookies.remove('teacher_token');
+        window.location.href = '/';
+    }
 </script>
