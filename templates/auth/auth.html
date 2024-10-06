@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
+
+    <!--import alerts.js in js folder-->
+    <script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.min.js"></script>
+
+    <!--import axios-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!--import js-cookie-->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <style>
         .form {
             display: flex;
@@ -49,10 +60,11 @@
             border-radius: 0;
             box-sizing: border-box;
             outline: none;
+            color: #000;
         }
 
         button {
-            background-color: #007bff;
+            background-color: #3D2B1F;
             color: white;
             border: none;
             border-radius: 0;
@@ -62,22 +74,57 @@
 </head>
 
 <body>
+
+    <p align="center">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" width="200" height="100">
+    </p>
+<div style="height: 1px;background-color: #ccc;">
+</div>
     <div class="form">
         <form>
             <h1>Welcome</h1>
-            <input type="text" placeholder="Enter your email">
-            <input type="password" placeholder="Enter your password">
+            <input type="text" id="email" placeholder="Enter your email">
+            <input type="password" id="password" placeholder="Enter your password">
             <!--combobox-->
-            <select>
-                <option value="admin">Teacher</option>
-                <option value="user">Student</option>
+            <select class="role">
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
             </select>
-            <button type="submit">Proceed</button>
+            <button id="login" type="submit">Proceed</button>
         </form>
     </div>
 </body>
 
 <script>
-    // post to /api/login
+    document.getElementById('login').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const role = document.querySelector('.role').value;
+        try {
+            const response = await axios.post('/api/auth', {
+                email,
+                password,
+                role
+            });
+            const data = response.data;
+            if (response.status === 200 || response.status === 201) {
+                pushNotify('success', 'Authentication successful', { timeout: 5000 });
+                Cookies.set('access_token', data.access_token, { expires: 1 });
+                setTimeout(() => {
+                    if (data.role === "student") {
+                        window.location.href = `/teacher/dashboard/${data.id}`;
+                    } else if (data.role === "teacher") {
+                        window.location.href = `/student/dashboard/${data.id}`;
+                    }
+                }, 4000);
+            } else {
+                pushNotify('warning', data.message);
+            }
+        } catch (error) {
+            pushNotify('error', 'Invalid credentials');
+        }
+    });
 </script>
+
 </html>

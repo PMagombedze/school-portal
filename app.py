@@ -1,7 +1,7 @@
 from flask import Flask
 from config import Config
 from models import db
-from api import api
+from api import api, jwt
 
 app = Flask(__name__)
 
@@ -15,6 +15,7 @@ app.register_blueprint(dash, url_prefix='/')
 
 with app.app_context():
     db.init_app(app)
+    jwt.init_app(app)
     api.init_app(app)
     db.create_all()
 
