@@ -112,13 +112,13 @@
             if (response.status === 200 || response.status === 201) {
                 pushNotify('success', 'Authentication successful', { timeout: 5000 });
                 setTimeout(() => {
-                    localStorage.setItem('id', data.id);
                     if (data.role === "student") {
                         Cookies.set('student_token', data.access_token, { expires: 1 });
-                        //localstorage set
+                        localStorage.setItem('studentId', data.id);
                         window.location.href = `/student/dashboard/${data.id}`;
                     } else if (data.role === "teacher") {
                         Cookies.set('teacher_token', data.access_token, { expires: 1 });
+                        localStorage.setItem('teacherId', data.id);
                         window.location.href = `/teacher/dashboard/${data.id}`;
                     }
                 }, 4000);

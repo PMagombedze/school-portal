@@ -92,7 +92,8 @@
             <li><a href="#"><span uk-icon="icon: list"></span> Enrolled Courses</a></li>
             <li><a href="#"><span uk-icon="icon: users"></span> Tutors</a></li>
             <li><a href="#"><span uk-icon="icon: file-text"></span> Resources</a></li>
-            <li><a href="#"><span uk-icon="icon: check"></span> Results</a></li>
+            {% include 'modal.html' %}
+            <li><a href="#" uk-toggle="target: #modal-example"><span uk-icon="icon: check"></span> Results</a></li>
             <li><a href="#"><span uk-icon="icon: sign-out"></span> Logout</a></li>
         </ul>
     </aside>
