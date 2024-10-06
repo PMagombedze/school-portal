@@ -108,6 +108,7 @@
                 role
             });
             const data = response.data;
+            console.log(data)
             if (response.status === 200 || response.status === 201) {
                 pushNotify('success', 'Authentication successful', { timeout: 5000 });
                 Cookies.set('access_token', data.access_token, { expires: 1 });
