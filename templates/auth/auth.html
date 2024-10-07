@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kriste Mambo - Portal</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@1.0.4/dist/simple-notify.css" />
-
+<!--import uikitcss-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/css/uikit.min.css" />
+    <!--import uikitjs-->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/js/uikit.min.js"></script>
     <!--import alerts.js in js folder-->
     <script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
     <!-- JS -->
@@ -86,7 +89,7 @@
             <input type="text" id="email" placeholder="Enter your email">
             <input type="password" id="password" placeholder="Enter your password">
             <!--combobox-->
-            <select class="role">
+            <select class="role uk-select" style="margin-bottom: 20px;">
                 <option value="teacher">Teacher</option>
                 <option value="student">Student</option>
             </select>
@@ -122,11 +125,13 @@
                         window.location.href = `/teacher/dashboard/${data.id}`;
                     }
                 }, 4000);
+            } else if (response.status === 401) {
+                pushNotify('warning', 'Incorrect email or password');
             } else {
-                pushNotify('warning', data.message);
+                pushNotify('warning', 'User does not exist');
             }
         } catch (error) {
-            pushNotify('error', 'Invalid credentials');
+            pushNotify('error', 'An error occurred, try again');
         }
     });
 </script>

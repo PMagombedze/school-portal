@@ -31,7 +31,7 @@ class Login(Resource):
             db.session.add(new_user)
             db.session.commit()
             access_token = create_access_token(identity=args['email'])
-            return {'message': 'success', 'access_token': access_token, 'role': args['role'], 'id': new_user.id, 'email': user.email}, 201
+            return {'message': 'success', 'access_token': access_token, 'role': args['role'], 'id': new_user.id, 'email': new_user.email}, 201
         else:
             return {'message': 'Invalid credentials'}, 401
         

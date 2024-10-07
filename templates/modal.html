@@ -67,7 +67,7 @@
             data.students.forEach(student => {
                 if (student.student_id === parseInt(studentId_)) {
                     student.marks.forEach(mark => {
-                        const subject = subjects[mark.subject_id];
+                        const subject = subjects[mark.subject_id - 1];
                         if (!subjectScores[subject] || subjectScores[subject] < mark.score) {
                             subjectScores[subject] = mark.score;
                         }
